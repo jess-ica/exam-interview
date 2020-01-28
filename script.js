@@ -12,3 +12,11 @@ $(function(){
 $(function(){
   $("#blog").load("blog.html"); 
 });
+
+$(function(){
+  $("#scene-change").load("scene-change.html"); 
+});
+
+$(function(){
+  $("#word-game").load("word-game.html"); 
+});
