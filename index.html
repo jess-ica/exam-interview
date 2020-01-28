@@ -8,11 +8,12 @@
     <link href="https://fonts.googleapis.com/css?family=Abril+Fatface&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
     
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/p5.js"></script>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/addons/p5.sound.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="script.js"></script> 
   </head> 
   
   <body>
@@ -22,7 +23,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     
     <div id="header">
-      <h1>ICS4U Portfolio</h1>
+      <h1 id="portfolio-title">ICS4U Portfolio</h1>
     </div>
     
     <div id="main">
@@ -49,7 +50,7 @@
       <h2 class="module-title">
         AP®︎ Computer Science Principles
       </h2>
-      <img src="https://cdn.glitch.com/a1c0b1e7-aaa4-4b60-b524-21f0d3ab92c0%2FAPCSP.png?v=1580181332466" width="90%">
+      <img src="https://cdn.glitch.com/a1c0b1e7-aaa4-4b60-b524-21f0d3ab92c0%2FAPCSP.png?v=1580181332466" width="90%" class="rounded mx-auto d-block">
       <p>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
       </p>
@@ -59,6 +60,15 @@
       <h2 class="module-title">
         Intro to HTML/CSS: Making webpages
       </h2>
+      
+      <div class="d-flex justify-content-center">
+        <div class="container-fluid row">
+          <div id="travel-webpage" class="html-module col-sm"> </div>
+          <div id="recipe-book" class="html-module col-sm"> </div>
+          <div id="blog" class="html-module col-sm"> </div>
+        </div>
+      </div>
+      
       <p>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
       </p>
