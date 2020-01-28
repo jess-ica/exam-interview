@@ -27,6 +27,8 @@ h1 {
 
 .module-title {
   font-family: 'Abril Fatface', cursive;
+  color: #fcbbdd;
+  font-size: 30px;
 }
 
 .module-text {
