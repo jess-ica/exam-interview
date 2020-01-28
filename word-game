@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Project: Word game </title>
+        <style>
+            
+        </style>
+    </head>
+    <body>
+    
+    <h1>Word game!</h1>
+    <form id="joke-form">
+        <label>
+            Unscramble these letters to form a word:<br>
+            <span class="scrambled">REYJUQ</span>
+            <br>
+            <input type="text" size="10">
+        </label>
+        <button type="submit">Check</button>
+    </form>
+
+    <p id="result"></p>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script>
+        var count = 0;
+        var word = "jquery";
+        // when the user submits the form,
+        $("#joke-form").on("submit", function(event) {
+            event.preventDefault();
+
+            var text = $(this).find("[type=text]").val().toLowerCase();
+            console.log(text);
+            
+            if(text === word) {
+                count++;
+            
+                switch(count) {
+                case 1:
+                    word = "eden";
+                    $(this).find("[class=scrambled]").text("DNEE");
+                    break;
+                case 2:
+                    word = "programming";
+                    $(this).find("[class=scrambled]").text("GAMGRNIMOPR");
+                    break;
+                case 3:
+                    word = "eternal";
+                    $(this).find("[class=scrambled]").text("RNLAETE");
+                    break;
+                case 4:
+                    word = "waves";
+                    $(this).find("[class=scrambled]").text("VWASE");
+                    break;
+                case 5:
+                    $("h1").text = "";
+                    $(this)
+                        .text("YOU WIN!!!")
+                        .appendTo("body");
+                    break;
+                }
+                $("#result")
+                    .text("")
+            }
+            else {
+                $("#result")
+                    .text("Try again!")
+            }
+        });
+        //   check that their answer is correct
+        //   and show them appropriate message
+    </script>
+    </body>
+</html>
