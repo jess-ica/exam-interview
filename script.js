@@ -20,3 +20,7 @@ $(function(){
 $(function(){
   $("#word-game").load("word-game.html"); 
 });
+
+$(function(){
+  $("#basic-cardioid").load("basic-cardioid.html"); 
+});
