@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Jessica Hood ICS4U Portfolio</title>
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Abril+Fatface&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+
+    <script src="https://raw.githubusercontent.com/processing-js/processing-js/v1.4.8/processing.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/addons/p5.sound.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="script.js"></script>
+  </head>
+
+  <div class="header-here"></div>
+
+  <a class="back" href="index.html#introjs">Back</a>
+
+  <script>
+    new p5();
+
+    var cnv;
+
+    function centerCanvas() {
+      var x = (windowWidth - width) / 2;
+      var y = (windowHeight - height) / 2;
+      cnv.position(x, y);
+    }
+
+    function setup() {
+      cnv = createCanvas(400, 400);
+      centerCanvas();
+    }
+
+    function windowResized() {
+      centerCanvas();
+    }
+
+    function draw() {
+      background(177, 205, 224);
+      fill(0, 0, 0);
+      stroke(0, 0, 0);
+      textSize(30);
+      text("VERTIGO BY EDEN!", 10, 30);
+
+      //tagline
+      textSize(20);
+      text(
+        "This album is GUARENTEED to give you \nhappiness for as long as you listen to it!",
+        10,
+        60
+      );
+
+      //description
+      textSize(15);
+      text(
+        "With beautiful melodies and pleasant tunes, \nEDEN blows everyone away yet again with this \namazing new piece of art!",
+        10,
+        351
+      );
+
+      //vinyl 2
+      fill(255, 255, 255);
+      ellipse(300, 210, 160, 160);
+      ellipse(300, 210, 130, 130);
+      ellipse(300, 210, 100, 100);
+      fill(125, 176, 209);
+      ellipse(300, 210, 70, 70);
+
+      //vinyl 1
+      fill(255, 255, 255);
+      ellipse(250, 210, 70, 70);
+      ellipse(250, 210, 160, 160);
+      ellipse(250, 210, 130, 130);
+      ellipse(250, 210, 100, 100);
+      fill(125, 176, 209);
+      ellipse(250, 210, 70, 70);
+
+      //album
+      rect(69, 110, 200, 200);
+      stroke(255, 255, 255);
+      fill(255, 255, 255);
+      ellipse(208, 230, 10, 10);
+      textSize(10);
+      text("v\ne\nr\nt\ni\ng\no", 100, 139);
+    }
+  </script>
+</html>
+
