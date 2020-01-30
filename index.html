@@ -1,170 +1,355 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Jessica Hood ICS4U Portfolio</title>
-    
-    <link href="https://fonts.googleapis.com/css?family=Abril+Fatface&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="style.css">
-    
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Abril+Fatface&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+
     <script src="https://raw.githubusercontent.com/processing-js/processing-js/v1.4.8/processing.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/p5.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/addons/p5.sound.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script src="script.js"></script> 
-  </head> 
-  
+    <script src="script.js"></script>
+  </head>
+
   <body>
-        
-    <div id="header">
-      <h1 id="portfolio-title">ICS4U Portfolio</h1>
-    </div>
-    
+    <div class="header-here"></div>
+
     <div id="main">
-      
-    <div id="module-list">
-      <p id="module-list-title">
-        Top Ten Modules
-      </p>
-      <ol>
-        <li><a href="#apcsp">AP®︎ Computer Science Principles</a></li>
-        <li><a href="#html">Intro to HTML/CSS: Making webpages</a></li>
-        <li><a href="#ns">Advanced JS: Natural Simulations</a></li>
-        <li><a href="#cv">Coding Challenge: Cardioid Visualization</a></li>
-        <li><a href="#jquery">HTML/JS: Making webpages interactive with jQuery</a></li>
-        <li><a href="#hackathon">Hackathon: Study Bunny</a></li>
-        <li><a href="#introjs">Intro to JS: Drawing & Animation</a></li>
-        <li><a href="#cubing">Cubing: The Pyraminx Duo & The 2x2 Cube</a></li>
-        <li><a href="#fcc">FreeCodeCamp: Responsive Web Design</a></li>
-        <li><a href="#algorithms">Algorithms</a></li>
-      </ol>
-    </div>
-    
-    <div id="apcsp" class="module">
-      <h2 class="module-title">
-        AP®︎ Computer Science Principles
-      </h2>
-      <img src="https://cdn.glitch.com/a1c0b1e7-aaa4-4b60-b524-21f0d3ab92c0%2FAPCSP.png?v=1580181332466" width="90%" class="rounded mx-auto d-block">
-      <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-      </p>
-    </div>
-      
-    <div id="html" class="module">
-      <h2 class="module-title">
-        Intro to HTML/CSS: Making webpages
-      </h2>
-      
-      <div class="d-flex justify-content-center">
-        <div class="container-fluid row">
-          <div id="travel-webpage" class="html-module col-sm"> </div>
-          <div id="recipe-book" class="html-module col-sm"> </div>
-          <div id="blog" class="html-module col-sm"> </div>
+      <div id="module-list">
+        <p id="module-list-title">
+          Top Ten Modules
+        </p>
+        <ol>
+          <li><a href="#apcsp">AP®︎ Computer Science Principles</a></li>
+          <li><a href="#html">Intro to HTML/CSS: Making webpages</a></li>
+          <li><a href="#ns">Advanced JS: Natural Simulations</a></li>
+          <li><a href="#cv">Coding Challenge: Cardioid Visualization</a></li>
+          <li>
+            <a href="#jquery"
+              >HTML/JS: Making webpages interactive with jQuery</a
+            >
+          </li>
+          <li><a href="#hackathon">Hackathon: Study Bunny</a></li>
+          <li><a href="#introjs">Intro to JS: Drawing & Animation</a></li>
+          <li><a href="#cubing">Cubing: The Pyraminx Duo & The 2x2 Cube</a></li>
+          <li><a href="#fcc">FreeCodeCamp: Responsive Web Design</a></li>
+          <li><a href="#algorithms">Algorithms</a></li>
+        </ol>
+      </div>
+
+      <div id="apcsp">
+        <h2 class="module-title">
+          AP®︎ Computer Science Principles
+        </h2>
+        <img
+          src="https://cdn.glitch.com/a1c0b1e7-aaa4-4b60-b524-21f0d3ab92c0%2FAPCSP.png?v=1580181332466"
+          class="mx-auto d-block image"
+        />
+        <p class="module-text">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+          culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+      </div>
+
+      <div id="html">
+        <h2 class="module-title">
+          Intro to HTML/CSS: Making webpages
+        </h2>
+
+        <div class="d-flex justify-content-center">
+          <div class="container-fluid row">
+            <div id="travel-webpage" class="html-module col-sm"></div>
+            <div id="recipe-book" class="html-module col-sm"></div>
+            <div id="blog" class="html-module col-sm"></div>
+          </div>
         </div>
+
+        <p class="module-text">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+          culpa qui officia deserunt mollit anim id est laborum.
+        </p>
       </div>
-      
-      <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-      </p>
-    </div>
-      
-    <div id="ns" class="module">
-      <h2 class="module-title">
-        Advanced JS: Natural Simulations
-      </h2>
-      <a href="fishes.html">sdfggsf</a> 
-      <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-      </p>
-    </div>
-      
-      <div id="cv" class="module">
-      <h2 class="module-title">
-        Coding Challenge: Cardioid Visualization
-      </h2>
-      <a href="basic-cardioid.html">bru</a>
-      <div id="basic-cardioid">
-      </div>
-        
-      <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-      </p>
-    </div>
-      
-      <div id="jquery" class="module">
-      <h2 class="module-title">
-        HTML/JS: Making webpages interactive with jQuery
-      </h2>
-        
-      <div class="d-flex justify-content-center">
-        <div class="container-fluid row">
-          <div id="scene-change" class="html-module col-sm"> </div>
-          <div id="word-game" class="html-module col-sm"> </div>
+
+      <div id="ns">
+        <h2 class="module-title">
+          Advanced JS: Natural Simulations
+        </h2>
+        <div class="d-flex justify-content-center">
+          <div class="container">
+            <div class="row">
+              <div class="col">
+                <a href="paint.html">
+                  <img
+                    class="js-module"
+                    src="https://cdn.glitch.com/a1c0b1e7-aaa4-4b60-b524-21f0d3ab92c0%2FScreen%20Shot%202020-01-30%20at%202.22.36%20AM.png?v=1580368994335"
+                  />
+                </a>
+              </div>
+              <div class="col">
+                <a href="fishes.html"
+                  ><img
+                    class="js-module"
+                    src="https://cdn.glitch.com/a1c0b1e7-aaa4-4b60-b524-21f0d3ab92c0%2Ffishes.png?v=1580368492704"
+                  />
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
+        <p class="module-text">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+          culpa qui officia deserunt mollit anim id est laborum.
+        </p>
       </div>
 
+      <div id="cv">
+        <h2 class="module-title">
+          Coding Challenge: Cardioid Visualization
+        </h2>
+        <div class="d-flex justify-content-center">
+          <div class="container">
+            <div class="row">
+              <div class="col">
+                <a href="basic-cardioid.html">
+                  <img
+                    class="js-module"
+                    src="https://cdn.glitch.com/a1c0b1e7-aaa4-4b60-b524-21f0d3ab92c0%2Fcardioid.png?v=1580367420102"
+                  />
+                </a>
+              </div>
+              <div class="col">
+                <a href="cardioid-refactored.html"
+                  ><img
+                    class="js-module"
+                    src="https://cdn.glitch.com/a1c0b1e7-aaa4-4b60-b524-21f0d3ab92c0%2Frefactored.png?v=1580367616880"
+                  />
+                </a>
+              </div>
+              <div class="col">
+                <a href="rose-visualization.html"
+                  ><img
+                    class="js-module"
+                    src="https://cdn.glitch.com/a1c0b1e7-aaa4-4b60-b524-21f0d3ab92c0%2Frose-visualization.png?v=1580367833173"
+                  />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="module-text">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+          culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+      </div>
 
-      <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-      </p>
-    </div>
-      
-      <div id="hackathon" class="module">
-      <h2 class="module-title">
-        Hackathon: Study Bunny
-      </h2>
-      <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-      </p>
-    </div>
-      
-      <div id="introjs" class="module">
-      <h2 class="module-title">
-        Intro to JS: Drawing & Animation
-      </h2>
-      <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-      </p>
-    </div>
-      
-    <div id="cubing" class="module">
-      <h2 class="module-title">
-        Cubing: The Pyraminx Duo & The 2x2 Cube
-      </h2>
-        <img id="cube" src="https://cdn.glitch.com/a1c0b1e7-aaa4-4b60-b524-21f0d3ab92c0%2Fcube.jpg?v=1580194918361">
-        <img id="pyraminx" src="https://cdn.glitch.com/a1c0b1e7-aaa4-4b60-b524-21f0d3ab92c0%2Fpyraminx.jpg">
-      <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-      </p>
-    </div>
-      
-      <div id="fcc" class="module">
-      <h2 class="module-title">
-        FreeCodeCamp: Responsive Web Design
-      </h2>
-      <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-      </p>
-    </div>
-      
-      <div id="algorithms" class="module">
-      <h2 class="module-title">
-        Algorithms
-      </h2>
-      <a href="recursive-art.html">sgdsfa</a>
-      <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-      </p>
-    </div>
-      
-    
-      
-    </div>
+      <div id="jquery">
+        <h2 class="module-title">
+          HTML/JS: Making webpages interactive with jQuery
+        </h2>
 
+        <div class="d-flex justify-content-center">
+          <div class="container-fluid row">
+            <div id="scene-change" class="html-module col-sm"></div>
+            <div id="word-game" class="html-module col-sm"></div>
+          </div>
+        </div>
 
-    </body>
+        <p class="module-text">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+          culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+      </div>
+
+      <div id="hackathon">
+        <h2 class="module-title">
+          Hackathon: Study Bunny
+        </h2>
+        <a href="https://studybunny.glitch.me" target="_blank">
+          <img
+            class="image"
+            src="https://cdn.glitch.com/a1c0b1e7-aaa4-4b60-b524-21f0d3ab92c0%2Fstudybunny.png?v=1580371393968"
+          />
+        </a>
+        <p class="module-text">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+          culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+      </div>
+
+      <div id="introjs">
+        <h2 class="module-title">
+          Intro to JS: Drawing & Animation
+        </h2>
+
+        <div class="d-flex justify-content-center">
+          <div class="container">
+            <div class="row">
+              <div class="col">
+                <a href="starry-night.html">
+                  <img
+                    class="js-module"
+                    src="https://cdn.glitch.com/a1c0b1e7-aaa4-4b60-b524-21f0d3ab92c0%2Fstarrynight.png?v=1580370815410"
+                  />
+                </a>
+              </div>
+              <div class="col">
+                <a href="ad-design.html"
+                  ><img
+                    class="js-module"
+                    src="https://cdn.glitch.com/a1c0b1e7-aaa4-4b60-b524-21f0d3ab92c0%2Faddesign.png?v=1580369427027"
+                  />
+                </a>
+              </div>
+              <div class="col">
+                <a href="fish-click.html"
+                  ><img
+                    class="js-module"
+                    src="https://cdn.glitch.com/a1c0b1e7-aaa4-4b60-b524-21f0d3ab92c0%2Ffishclicks.png?v=1580369871138"
+                  />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="module-text">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+          culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+      </div>
+
+      <div id="cubing">
+        <h2 class="module-title">
+          Cubing: The Pyraminx Duo & The 2x2 Cube
+        </h2>
+        <img
+          id="cube"
+          src="https://cdn.glitch.com/a1c0b1e7-aaa4-4b60-b524-21f0d3ab92c0%2Fcube.jpg?v=1580194918361"
+        />
+        <img
+          id="pyraminx"
+          src="https://cdn.glitch.com/a1c0b1e7-aaa4-4b60-b524-21f0d3ab92c0%2Fpyraminx.jpg"
+        />
+        <p class="module-text">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+          culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+      </div>
+
+      <div id="fcc">
+        <h2 class="module-title">
+          FreeCodeCamp: Responsive Web Design
+        </h2>
+        <a href="https://www.freecodecamp.org/jesss1ca" target="_blank">
+          <img
+            class="image"
+            src="https://cdn.glitch.com/a1c0b1e7-aaa4-4b60-b524-21f0d3ab92c0%2Ffreecodecamp.png?v=1580367406056"
+          />
+        </a>
+        <p class="module-text">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+          culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+      </div>
+
+      <div id="algorithms">
+        <h2 class="module-title">
+          Algorithms
+        </h2>
+        <div class="d-flex justify-content-center">
+          <div class="container">
+            <div class="row">
+              <div class="col">
+                <a href="recursive-art.html">
+                  <img
+                    class="js-module"
+                    src="https://cdn.glitch.com/a1c0b1e7-aaa4-4b60-b524-21f0d3ab92c0%2Frecursiveart.png?v=1580360112625"
+                  />
+                </a>
+              </div>
+              <div class="col">
+                <a href="selection-sort.html"
+                  ><img
+                    class="js-module"
+                    src="https://cdn.glitch.com/a1c0b1e7-aaa4-4b60-b524-21f0d3ab92c0%2Fselectionsort.png?v=1580360211883"
+                  />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p class="module-text">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+          culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+      </div>
+    </div>
+  </body>
 </html>
+
