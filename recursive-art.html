@@ -1,49 +1,90 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/p5.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/addons/p5.sound.min.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Jessica Hood ICS4U Portfolio</title>
 
-<script>
-  new p5();
+    <link
+      href="https://fonts.googleapis.com/css?family=Abril+Fatface&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+
+    <script src="https://raw.githubusercontent.com/processing-js/processing-js/v1.4.8/processing.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/addons/p5.sound.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="script.js"></script>
+  </head>
+
+  <div class="header-here"></div>
+
+  <a class="back" href="index.html#algorithms">Back</a> 
   
-  function setup() {
-    createCanvas(400, 400);
-    ellipseMode(CENTER);
-    rectMode(CENTER);
-    angleMode(DEGREES);
-  }
+  <script>
+    new p5();
 
-  var drawShape = function(level, radius, angleStart, angleEnd) {   
+    var cnv;
+
+    function centerCanvas() {
+      var x = (windowWidth - width) / 2;
+      var y = (windowHeight - height) / 2;
+      cnv.position(x, y);
+    }
+
+    function setup() {
+      cnv = createCanvas(400, 400);
+      centerCanvas();
+      ellipseMode(CENTER);
+      rectMode(CENTER);
+      angleMode(DEGREES);
+    }
+
+    function windowResized() {
+      centerCanvas();
+    }
+
+    var drawShape = function(level, radius, angleStart, angleEnd) {
       resetMatrix();
-      translate(width/2,height/2);
-      var angleMiddle = (angleStart+angleEnd)/2;
+      translate(width / 2, height / 2);
+      var angleMiddle = (angleStart + angleEnd) / 2;
       rotate(angleMiddle);
 
-      var size = 200/(level+2);
+      var size = 200 / (level + 2);
 
-      fill( (level % 3)*80,215,(level % 2)*227,125);
+      fill((level % 3) * 80, 215, (level % 2) * 227, 125);
 
-      if ( (level % 2) === 1)  {
-          rect(   radius, -69, size*2, size);
+      if (level % 2 === 1) {
+        rect(radius, -69, size * 2, size);
+      } else {
+        ellipse(radius, -40, size, size * 2);
       }
-      else {
-          ellipse(radius, -40, size, size*2);
-      }
 
-      var newRadius = radius+35;
+      var newRadius = radius + 35;
 
-      var newLevel  = level+1;
+      var newLevel = level + 1;
 
       if (angleEnd - angleStart >= 20) {
-          drawShape(newLevel, newRadius, angleStart,  angleMiddle);
-          drawShape(newLevel, newRadius, angleMiddle, angleEnd);
+        drawShape(newLevel, newRadius, angleStart, angleMiddle);
+        drawShape(newLevel, newRadius, angleMiddle, angleEnd);
       }
-  };
+    };
 
-  function draw () {
-    background(255, 255, 255);
-    resetMatrix();
-    drawShape(0, 0, 0, 360);
-  }
+    function draw() {
+      background(255, 255, 255);
+      resetMatrix();
+      drawShape(0, 0, 0, 360);
+    }
+  </script>
+</html>
 
-
-
-</script>
