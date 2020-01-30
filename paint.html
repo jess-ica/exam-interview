@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Jessica Hood ICS4U Portfolio</title>
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Abril+Fatface&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+
+    <script src="https://raw.githubusercontent.com/processing-js/processing-js/v1.4.8/processing.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/addons/p5.sound.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="script.js"></script>
+  </head>
+
+  <div class="header-here"></div>
+
+  <a class="back" href="index.html#ns">Back</a>
+
+  <script>
+    new p5();
+
+    var cnv;
+
+    function centerCanvas() {
+      var x = (windowWidth - width) / 2;
+      var y = (windowHeight - height) / 2;
+      cnv.position(x, y);
+    }
+
+    function setup() {
+      cnv = createCanvas(400, 400);
+      centerCanvas();
+      background(0);
+    }
+
+    function windowResized() {
+      centerCanvas();
+    }
+
+    var standardDeviation = 50;
+    var mean = 200;
+
+    draw = function() {
+      var num = randomGaussian(1);
+      var num2 = randomGaussian(1);
+      var num3 = randomGaussian(1);
+
+      var x = num * standardDeviation + mean;
+      var y = num2 * standardDeviation + mean;
+      var z = num3 * standardDeviation + mean;
+
+      noStroke();
+
+      fill(x, y, z);
+
+      ellipse(x, y, 10, 10);
+    };
+  </script>
+</html>
+
