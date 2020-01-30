@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Jessica Hood ICS4U Portfolio</title>
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Abril+Fatface&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+
+    <script src="https://raw.githubusercontent.com/processing-js/processing-js/v1.4.8/processing.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/addons/p5.sound.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="script.js"></script>
+  </head>
+
+  <div class="header-here"></div>
+
+  <a class="back" href="index.html#cv">Back</a>
+
+  <script>
+    new p5();
+
+    var cnv;
+
+    function centerCanvas() {
+      var x = (windowWidth - width) / 2;
+      var y = (windowHeight - height) / 2;
+      cnv.position(x, y);
+    }
+
+    function setup() {
+      cnv = createCanvas(400, 400);
+      centerCanvas();
+    }
+
+    function windowResized() {
+      centerCanvas();
+    }
+
+    var SquareShape = function(sideLen) {
+      this.sideLen = sideLen;
+
+      this.LBPnt = createVector(-sideLen / 2, +sideLen / 2);
+      this.LTPnt = createVector(-sideLen / 2, -sideLen / 2);
+      this.RTPnt = createVector(+sideLen / 2, -sideLen / 2);
+      this.RBPnt = createVector(+sideLen / 2, +sideLen / 2);
+    };
+
+    SquareShape.prototype.draw = function() {
+      line(this.LBPnt.x, this.LBPnt.y, this.LTPnt.x, this.LTPnt.y);
+      line(this.LTPnt.x, this.LTPnt.y, this.RTPnt.x, this.RTPnt.y);
+      line(this.RTPnt.x, this.RTPnt.y, this.RBPnt.x, this.RBPnt.y);
+      line(this.RBPnt.x, this.RBPnt.y, this.LBPnt.x, this.LBPnt.y);
+    };
+
+    SquareShape.prototype.getVectorPnt = function(scalarPnt) {
+      const vectorPnt = createVector(0, 0);
+
+      scalarPnt %= 100;
+      if (scalarPnt < 25) {
+        vectorPnt.x = -this.sideLen / 2;
+        vectorPnt.y = map(
+          scalarPnt,
+          0,
+          25,
+          +this.sideLen / 2,
+          -this.sideLen / 2
+        );
+      } else if (scalarPnt < 50) {
+        vectorPnt.x = map(
+          scalarPnt,
+          25,
+          50,
+          -this.sideLen / 2,
+          +this.sideLen / 2
+        );
+        vectorPnt.y = -this.sideLen / 2;
+      } else if (scalarPnt < 75) {
+        vectorPnt.x = +this.sideLen / 2;
+        vectorPnt.y = map(
+          scalarPnt,
+          50,
+          75,
+          -this.sideLen / 2,
+          +this.sideLen / 2
+        );
+      } else if (scalarPnt < 100) {
+        vectorPnt.x = map(
+          scalarPnt,
+          75,
+          100,
+          +this.sideLen / 2,
+          -this.sideLen / 2
+        );
+        vectorPnt.y = +this.sideLen / 2;
+      } else {
+        print("Square error 1");
+      }
+
+      return vectorPnt;
+    };
+
+    var TriangleShape = function(sideLen) {
+      this.sideLen = sideLen;
+      this.height = (sqrt(3.0) * sideLen) / 2.0;
+
+      this.leftPnt = createVector(-sideLen / 2, this.height / 2);
+      this.rightPnt = createVector(+sideLen / 2, this.height / 2);
+      this.topPnt = createVector(0, -this.height / 2);
+    };
+
+    TriangleShape.prototype.draw = function() {
+      line(this.leftPnt.x, this.leftPnt.y, this.rightPnt.x, this.rightPnt.y);
+      line(this.rightPnt.x, this.rightPnt.y, this.topPnt.x, this.topPnt.y);
+      line(this.topPnt.x, this.topPnt.y, this.leftPnt.x, this.leftPnt.y);
+    };
+
+    TriangleShape.prototype.getVectorPnt = function(scalarPnt) {
+      const vectorPnt = createVector(0, 0);
+
+      scalarPnt %= 100;
+      if (scalarPnt < 33.33) {
+        vectorPnt.x = map(scalarPnt, 0, 33.33, -this.sideLen / 2, 0);
+        vectorPnt.y = map(
+          scalarPnt,
+          0,
+          33.33,
+          +this.height / 2,
+          -this.height / 2
+        );
+      } else if (scalarPnt < 66.66) {
+        vectorPnt.x = map(scalarPnt, 33.33, 66.66, 0, +this.sideLen / 2);
+        vectorPnt.y = map(
+          scalarPnt,
+          33.33,
+          66.66,
+          -this.height / 2,
+          +this.height / 2
+        );
+      } else if (scalarPnt < 100) {
+        vectorPnt.x = map(
+          scalarPnt,
+          66.66,
+          100,
+          +this.sideLen / 2,
+          -this.sideLen / 2
+        );
+        vectorPnt.y = +this.height / 2;
+      } else {
+        print("Triangle error 1");
+      }
+
+      return vectorPnt;
+    };
+
+    var CircleShape = function(radius) {
+      this.radius = radius;
+    };
+
+    CircleShape.prototype.draw = function() {
+      noFill();
+      circle(0, 0, this.radius * 2);
+    };
+
+    CircleShape.prototype.getVectorPnt = function(scalarPnt) {
+      const angle = map(scalarPnt % 100, 0, 100, 0, TWO_PI);
+      const vectorPnt = p5.Vector.fromAngle(angle + PI);
+      // p5.Vector on unit circle, scale to our circle
+      vectorPnt.mult(this.radius);
+      return vectorPnt;
+    };
+
+    var Visualizer = function(shape, size) {
+      if (shape === "circle") {
+        this.numPoints = size;
+        this.shape = new CircleShape(size);
+      } else if (shape === "triangle") {
+        this.numPoints = size / 2;
+        this.shape = new TriangleShape(size);
+      } else if (shape === "square") {
+        this.numPoints = size / 2;
+        this.shape = new SquareShape(size);
+      } else {
+        print("Visualizer: Error shape unknown");
+      }
+
+      this.factor = 0;
+
+      this.redC = random(30, 200);
+      this.blueC = random(30, 200);
+      this.redPlus = this.bluePlus = false;
+      if (random(10) < 5) {
+        this.redPlus = true;
+      }
+      if (random(10) < 5) {
+        this.bluePlus = true;
+      }
+    };
+
+    Visualizer.prototype.draw = function() {
+      var shapeColour = this.getColour();
+      stroke(shapeColour);
+
+      this.shape.draw();
+
+      for (
+        let scalarPnt = 0;
+        scalarPnt < 100;
+        scalarPnt += 100 / this.numPoints
+      ) {
+        const a = this.shape.getVectorPnt(scalarPnt);
+        const b = this.shape.getVectorPnt(scalarPnt * this.factor);
+
+        line(a.x, a.y, b.x, b.y);
+      }
+
+      this.factor += 0.015;
+    };
+
+    Visualizer.prototype.getColour = function() {
+      if (this.redC >= 255) {
+        this.redPlus = false;
+      } else if (this.redC <= 0) {
+        this.redPlus = true;
+      }
+      if (this.blueC >= 255) {
+        this.bluePlus = false;
+      } else if (this.blueC <= 0) {
+        this.bluePlus = true;
+      }
+
+      if (this.redPlus) {
+        this.redC += 2;
+      } else {
+        this.redC -= 2;
+      }
+      if (this.bluePlus) {
+        this.blueC += 2;
+      } else {
+        this.blueC -= 2;
+      }
+
+      return color(this.redC, 0, this.blueC);
+    };
+
+    var visualizer1 = null;
+    var visualizer2 = null;
+    var visualizer3 = null;
+    var visualizer4 = null;
+
+    function draw() {
+      background(0);
+
+      if (visualizer1 === null) {
+        visualizer1 = new Visualizer("circle", 100);
+      }
+      resetMatrix();
+      translate(width / 4, height / 4);
+      visualizer1.draw();
+
+      if (visualizer2 === null) {
+        visualizer2 = new Visualizer("square", 200);
+      }
+      resetMatrix();
+      translate(width / 4, (3 * height) / 4);
+      visualizer2.draw();
+
+      if (visualizer3 === null) {
+        visualizer3 = new Visualizer("circle", 50);
+      }
+      resetMatrix();
+      translate((3 * width) / 4, height / 4);
+      visualizer3.draw();
+
+      if (visualizer4 === null) {
+        visualizer4 = new Visualizer("triangle", 200);
+      }
+      resetMatrix();
+      translate((3 * width) / 4, (3 * height) / 5);
+      visualizer4.draw();
+    }
+  </script>
+</html>
+
