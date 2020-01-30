@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Jessica Hood ICS4U Portfolio</title>
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Abril+Fatface&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+
+    <script src="https://raw.githubusercontent.com/processing-js/processing-js/v1.4.8/processing.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/addons/p5.sound.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="script.js"></script>
+  </head>
+
+  <div class="header-here"></div>
+
+  <a class="back" href="index.html#ns">Back</a>
+
+  <script>
+    new p5();
+    /*
+     * Curling, Crawling, Circling Creatures program (Oscillations project)
+     *
+     ****************************************************************
+     *
+     * Added for this Oscillations project:
+     *
+     *  1) oscillation of the jelly defence ring size, after it
+     *     expands to its maxmimum size.  See JellyRing 'update'
+     *     function for implementation details.
+     *
+     *  2) oscillation of a Fish's tail from side to side, at a rate
+     *     linked to the Fish's normal speed.  See Fish 'display'
+     *     function for implementation details.
+     *
+     ****************************************************************
+     *
+     * Fish swim, and like to eat Jelly Rings. Fish have 3 behaviours:
+     * scavenge, attack, and stunned. Jelly Rings have 2 behaviours: stationary
+     * spinning, and a Ring defence behavior that is turned on sometimes
+     * when bitten by fish. Fish can be stunned but do not die (in this
+     * version of the program). Jelly Rings when fully eaten, do 'die'
+     * and are respawned after a wait. Fish color reflects how hungry
+     * they are (fully red means they are very hungry and will attack
+     * and bite the Jelly Rings). Also fish change appearance when they
+     * are stunned by a Jelly Ring.
+     *
+     * 'Force' based motion is used (like Khan Academy example with the
+     * use of applyForce()), though 'swim' behavior of fish involves
+     * working backwards from desired 'turns' (that look realistic) to the
+     * forces needed to do the turn. Push (explosion force) is used by Jelly
+     * Rings to stun fish. Drag (water resistance) force is used to slow/stop
+     * stunned fish.
+     */
+
+    var WATER_COLOR;
+
+    /*
+     ******************** Jelly Ring CONSTANTs
+     */
+
+    // number of Jelly Ring Objects
+    var NUMBER_JELLY_RINGS = 4;
+    var JELLY_RESPAWN_WAIT = 100;
+    var JELLY_SCALE = 0.6;
+    // jelly ring petals spin at this max rate
+    var JELLY_PETAL_SPINRATE_MAX = 15;
+
+    // jelly ring defence level, 0 to 10:
+    //   0  - never defend when bitten
+    //   10 - always defend when bitten
+    var JELLY_DEFENCE_LEVEL = 3;
+    // repulsion strength of jelly ring force
+    var JELLY_DEFENCE_REPEL_STRENGTH = 5000;
+    // jelly ring defence lasts for this duration (it disappears, but
+    // can be retriggered by another fish biting the jelly ring)
+    var JELLY_DEFENCE_DURATION = 75;
+
+    var DEFENCE_RING_COLOR;
+    // fully expanded size of jelly ring's defensive ring
+    var DEFENCE_RING_SIZE_FINAL = 200;
+    var DEFENCE_EDGE_COLOR_EXPAND;
+    var DEFENCE_EDGE_COLOR_FINAL;
+    var DEFENCE_EDGE_WIDTH = 5;
+    var DEFENCE_RING_OSCILLATION_SPEED = 15;
+
+    /*
+     ******************** Fish CONSTANTs
+     */
+
+    // number of Fish Objects
+    var NUMBER_FISH = 9;
+    var FISH_SCALE = 0.7;
+
+    var FISH_SPEED_MAX = 3.0;
+    var FISH_ATTACK_ACCELERATION = 0.6;
+    var FISH_MASS = 1.0;
+
+    // time until tummy empty, and attack possible again
+    var FISH_TUMMY_FULL = 250;
+
+    // only jelly rings this close to fish can be detected by fish
+    var DETECTION_RADIUS = 130;
+    // only jelly rings this close to fish can be bitten by fish
+    var BITE_RADIUS = 20;
+
+    // when scavenging, the fish swims in circular arcs, each arc
+    // made of a variable number of tiny pieces
+    var ARC_PIECES_MIN = 10;
+    var ARC_PIECES_MAX = 70;
+
+    var FISH_STUNNED_DURATION = 100;
+    var FISH_STUNNED_DRAG_STRENGTH = 0.05;
+
+    var FISH_TAIL_OSCILLATION_SPEED = 7;
+
+    /*
+     ******************** Arrays for Fish and Jelly Ring Objects
+     */
+
+    var fishes = [];
+    var jellyRings = [];
+
+    /*
+     *
+     ******************** Jelly Ring code ********************
+     *
+     */
+
+    var JellyRing = function() {
+      this.position = createVector(
+        random(50, width - 50),
+        random(50, height - 50)
+      );
+      this.angle = random(360);
+      this.rateAngle = random(1, JELLY_PETAL_SPINRATE_MAX);
+      this.numPetals = 4;
+      this.behavior = "normal";
+      this.ringSizeFinal = DEFENCE_RING_SIZE_FINAL;
+      // in 'defenceMaintain' behavior, oscillate the size of the
+      // jelly's defence ring to this minimum size
+      this.oscilMinSize = this.ringSizeFinal * 0.6;
+    };
+
+    JellyRing.prototype.bite = function() {
+      this.numPetals--;
+      if (
+        this.behavior === "normal" &&
+        this.numPetals >= 0 &&
+        random(0, 10) < JELLY_DEFENCE_LEVEL
+      ) {
+        // jelly ring defends itself, new behavior
+        this.behavior = "defenceExpand";
+        // starting size of jelly defensive ring
+        this.defenceSize = 10;
+      }
+    };
+
+    JellyRing.prototype.update = function() {
+      // spin jelly ring petals
+      this.angle += this.rateAngle;
+
+      if (this.behavior === "defenceExpand") {
+        if (this.defenceSize < this.ringSizeFinal) {
+          // expand size of jelly defensive ring
+          this.defenceSize += 10;
+        } else {
+          // reached the maximum size of defensive ring,
+          // so change behavior to maintain final size
+          // for a fixed duration (after which it
+          // is made to disappear)
+          this.behavior = "defenceMaintain";
+          this.defenceWait = JELLY_DEFENCE_DURATION;
+          this.defenceTime = 0;
+
+          // upon reaching maximum size of ring, begin the
+          // oscillation of the ring size from the maximum
+          // sin value which occurs at 90 degrees (this
+          // choice of initial value makes the transition
+          // from ring expansion to oscillation look smooth)
+          this.oscAngle = 90; // at 90, sin begins to decrease
+        }
+      } else if (this.behavior === "defenceMaintain") {
+        if (this.defenceTime < this.defenceWait) {
+          this.defenceTime++; // countup duration
+
+          // oscillate the size of the jelly's defence ring
+          this.defenceSize = map(
+            sin(this.oscAngle),
+            -1,
+            +1,
+            this.oscilMinSize,
+            this.ringSizeFinal
+          );
+          this.oscAngle += DEFENCE_RING_OSCILLATION_SPEED;
+        } else {
+          // duration complete, return to normal behavior
+          this.behavior = "normal";
+        }
+      }
+
+      // in defensive mode, a jelly ring checks for fish inside
+      // its defensive ring, and if so, stuns them and pushes them away
+      if (
+        this.behavior === "defenceExpand" ||
+        this.behavior === "defenceMaintain"
+      ) {
+        for (var i = 0; i < fishes.length; i++) {
+          var diffPos = p5.Vector.sub(fishes[i].position, this.position);
+          var dist = diffPos.mag();
+          // note .defenceSize is diameter of ring (need to check
+          // against radius)
+          if (dist <= this.defenceSize / 2) {
+            // this fish is inside jelly's defence ring
+
+            // knock fish unconscious
+            fishes[i].hityou();
+
+            // compute a jelly ring repulsive force
+            // that is inversely proportional to square of
+            // distance between jelly ring and fish, but disallow
+            // 'too close' distances to jelly ring center (to
+            // avoid very large forces)
+            if (dist < 5) {
+              dist = 5;
+            }
+            diffPos.normalize(); // unit vector, pointing at fish
+            var pushMag = JELLY_DEFENCE_REPEL_STRENGTH / (dist * dist);
+            diffPos.mult(pushMag);
+            // force fish away
+            fishes[i].applyForce(diffPos);
+          }
+        } // for
+      }
+    };
+
+    JellyRing.prototype.display = function() {
+      // if all petals are eaten (numPetals===0), and the center
+      // of the plant is eaten (numPetals<0), the plant is dead so
+      // nothing to display (return)
+      if (this.numPetals < 0) {
+        return; // completely eaten
+      }
+
+      resetMatrix();
+      translate(this.position.x, this.position.y);
+
+      // need to restore matrix without rotate() and scale() for
+      // display of defensive ring -- so push here
+      push(); //pushMatrix();
+
+      // spin jelly ring petals
+      rotate(this.angle);
+
+      scale(JELLY_SCALE);
+
+      noStroke();
+      /*
+       *
+       * NOTE:
+       * the use of 'else if' here would be wrong because
+       * we need to check individually if each petal/center
+       * is still alive
+       *
+       */
+
+      // display center of jelly ring
+      if (this.numPetals >= 0) {
+        fill(0, 200, 0);
+        ellipse(0, 0, 30, 30);
+        fill(230, 255, 0);
+        ellipse(0, 0, 10, 10);
+      }
+
+      // display petals of the jelly ring
+      // (those not yet eaten by fish)
+      if (this.numPetals >= 1) {
+        fill(0, 255, 0);
+        ellipse(0, -20, 25, 25);
+        fill(255, 255, 0);
+        ellipse(0, -20, 10, 15);
+      }
+      if (this.numPetals >= 2) {
+        fill(0, 255, 0);
+        ellipse(20, 0, 25, 25);
+        fill(255, 0, 0);
+        ellipse(20, 0, 15, 10);
+      }
+      if (this.numPetals >= 3) {
+        fill(0, 255, 0);
+        ellipse(0, 20, 25, 25);
+        fill(255, 255, 0);
+        ellipse(0, 20, 10, 15);
+      }
+      if (this.numPetals === 4) {
+        fill(0, 255, 0);
+        ellipse(-20, 0, 25, 25);
+        fill(255, 0, 0);
+        ellipse(-20, 0, 15, 10);
+      }
+
+      // remove scale() and rotate() effects from above
+      // before displaying defensive ring (keep translate())
+      pop(); //popMatrix();
+
+      if (this.behavior === "normal") {
+        return; // no defensive ring displayed for 'normal'
+      } else if (this.behavior === "defenceExpand") {
+        stroke(DEFENCE_EDGE_COLOR_EXPAND);
+      } else if (this.behavior === "defenceMaintain") {
+        stroke(DEFENCE_EDGE_COLOR_FINAL);
+      }
+      strokeWeight(DEFENCE_EDGE_WIDTH);
+      fill(DEFENCE_RING_COLOR);
+      // display jelly's defensive ring
+      ellipse(0, 0, this.defenceSize, this.defenceSize);
+    };
+
+    JellyRing.respawnArray = function() {
+      for (var i = 0; i < NUMBER_JELLY_RINGS; i++) {
+        jellyRings[i] = new JellyRing();
+      }
+    };
+
+    JellyRing.clean = function() {
+      // careful to inspect from top to bottom of array, so each
+      // jelly ring is checked exactly once. be careful because a
+      // 'splice' removal of a jelly ring results in 0 or more
+      // successfully inspected jelly rings (top of array),
+      // being collapsed onto 0 or more not-yet-inspected
+      // jelly rings (bottom of array)
+      for (var i = jellyRings.length - 1; i >= 0; i--) {
+        // remove fully eaten jelly ring from array
+        if (jellyRings[i].numPetals < 0) {
+          jellyRings.splice(i, 1);
+        }
+      }
+      return jellyRings.length;
+    };
+
+    JellyRing.nearby = function(fishPos, howClose) {
+      var rndStart = Math.floor(random(0, jellyRings.length));
+      for (var j = 0; j < jellyRings.length; j++) {
+        var i = (rndStart + j) % jellyRings.length;
+        // numPetals === 0, means only center of jelly ring
+        // remains to be eaten (when < 0, the jelly ring
+        // is completely eaten)
+        if (jellyRings[i].numPetals >= 0) {
+          var diffPos = p5.Vector.sub(fishPos, jellyRings[i].position);
+          if (diffPos.mag() <= howClose) {
+            // return jelly ring that is close enough, to fish
+            return jellyRings[i];
+          }
+        }
+      }
+      // return no jelly ring, when none are close enough to
+      // fish position
+      return null;
+    };
+
+    /*
+     *
+     ******************** Fish Code ********************
+     *
+     */
+
+    var Fish = function() {
+      // initialize random fish position and velocity
+      this.position = createVector(random(width), random(height));
+      this.velocity = createVector(
+        random(-FISH_SPEED_MAX, FISH_SPEED_MAX),
+        random(-FISH_SPEED_MAX, FISH_SPEED_MAX)
+      );
+      if (this.velocity.mag() === 0) {
+        // force non-zero initialization of velocity
+        this.velocity = createVector(FISH_SPEED_MAX / 2, FISH_SPEED_MAX / 2);
+      }
+      this.origSpeed = this.velocity.mag();
+      this.tailAngle = 0; // for oscillating tail of fish
+      this.acceleration = createVector(0, 0);
+      this.mass = FISH_MASS;
+
+      // all fish start with scavenge swimming movement
+      this.behavior = "scavenge";
+      this.arcPieces = 0; // 0 forces choice of new arc
+      // initialize random hunger
+      this.tummyFullness = random(FISH_TUMMY_FULL);
+    };
+
+    Fish.prototype.applyForce = function(force) {
+      var accel = p5.Vector.div(force, this.mass);
+      this.acceleration.add(accel);
+    };
+
+    /*
+Fish.prototype.applyForceDEBUG  = function(force) {
+    var accel = p5.Vector.div(force, this.mass);
+    this.acceleration.add(accel);
+    
+    println("a.x "+this.acceleration.x);
+    println("a.y "+this.acceleration.y);
+    println("v.x "+this.velocity.x);
+    println("v.y "+this.velocity.y);
+    println("p.x "+this.position.x);
+    println("p.y "+this.position.y);
+};
+*/
+
+    Fish.prototype.hityou = function() {
+      // if not already stunned by jelly ring,
+      // switch to stunned behavior
+      if (this.behavior !== "stunned") {
+        this.behavior = "stunned";
+        // save fish orientation for drifting display
+        this.stunnedHeading = this.velocity.heading();
+        // when fish wakes up we want it to continue
+        // with orientation prior to stunning with the
+        // original speed of the fish
+        this.resumeVel = this.velocity.copy();
+        this.resumeVel.normalize();
+        this.resumeVel.mult(this.origSpeed);
+        // fish stays unconscious and drifts for a set duration
+        this.stunnedCnt = FISH_STUNNED_DURATION;
+      }
+    };
+
+    Fish.prototype.stunned = function() {
+      this.stunnedCnt--;
+      if (this.stunnedCnt <= 0) {
+        // after drifting stunned and unconscious for the
+        // full duration, wake up and resume scavenging
+        // (the velocity set has original speed, paired with the
+        // direction of travel at time of stun)
+        this.behavior = "scavenge";
+        this.arcPieces = 0;
+        this.velocity = this.resumeVel;
+        return;
+      }
+
+      // create and apply a drag force to drifting stunned fish
+      var vSpeed = this.velocity.mag();
+      var vCopy = this.velocity.copy();
+      vCopy.normalize();
+      vCopy.mult(-1); // drag acts opposite velocity
+      var dragStrength = FISH_STUNNED_DRAG_STRENGTH * vSpeed * vSpeed;
+
+      // dragStrength very small for slow speeds (will drift
+      // slowly forever).  Stopping it looks better
+      if (vSpeed < 0.25 || dragStrength > vSpeed) {
+        // just stop the fish
+        this.velocity = createVector(0, 0);
+        return;
+      }
+
+      vCopy.mult(dragStrength);
+      // apply the computed drag force to fish
+      this.applyForce(vCopy);
+    };
+
+    /*
+     * Fish attack behavior
+     *
+     * - fish detected a jelly ring, and no longer swims
+     * aimlessly about looking for food, but instead moves
+     * towards the location of its jelly ring target
+     */
+    Fish.prototype.attack = function() {
+      // vector from fish to jelly ring target
+      var fishToJelly = p5.Vector.sub(this.jellyPos, this.position);
+
+      // if fish is close enough to bite jelly ring, bite it if
+      // it is still where it use to be (some other fish
+      // might have eaten the last bite before this fish
+      // arrived)
+      if (fishToJelly.mag() < BITE_RADIUS) {
+        // first make sure there is still a jelly ring alive upon
+        // our arrival at the target location
+        var nearbyJelly = JellyRing.nearby(this.position, BITE_RADIUS);
+        if (nearbyJelly !== null) {
+          // bite the jelly ring
+          nearbyJelly.bite();
+          // reset hunger to a full tummy (fish does not need
+          // to eat again for awhile, and will not attack again
+          // until its hunger returns)
+          this.tummyFullness = FISH_TUMMY_FULL;
+        }
+
+        // return to scavenge swim motion (even if fish is no longer
+        // hungry and will not attack another jelly ring for awhile)
+        this.behavior = "scavenge";
+        this.arcPieces = 0; // 0 forces choice of new arc
+        // speed is reset to original scavenge speed
+        this.velocity.normalize();
+        this.velocity.mult(this.origSpeed);
+        return;
+      }
+
+      // if there is a large angle (>20 deg) between the
+      // direction the fish is heading, and the direction
+      // of the target jelly ring, then focus on turning the
+      // fish quickly towards the jelly ring (with constant
+      // speed)
+      var angleToJelly = this.velocity.angleBetween(fishToJelly);
+
+      // Khan Academy ancient version of Processing has
+      // .angleBetween as static func of PVector that always
+      // returns **positive** angle between 2 PVectors
+      // ... so, quick fix here is to mult by -1, negative
+      // angles returned by newer and better version of P5 Processing,
+      // and let code run as it did before in KA
+      if (angleToJelly < 0) {
+        angleToJelly *= -1;
+      }
+
+      if (angleToJelly > 20) {
+        // we need to know which way to make our turn
+        // towards jelly. Unless jelly is directly
+        // behind us, either left or right will be a
+        // smaller turn
+        var velHeading = this.velocity.heading();
+        var jelHeading = fishToJelly.heading();
+        // the two headings above are angles in degrees between
+        // -180 and +180.  To understand the following choice
+        // of left-turn vs. right-turn, it is best to draw a
+        // picture on paper
+        var turnRight = true;
+        if (velHeading < jelHeading && velHeading + 180 < jelHeading) {
+          turnRight = false; // turn left
+        } else if (velHeading > jelHeading && velHeading - 180 < jelHeading) {
+          turnRight = false; // turn left
+        }
+        // turning quickly towards jelly means 1/10 of total
+        // angle done in this draw cycle. For a left turn we
+        // multiply by -1 since rotate (-angle) turns
+        // vector counter-clockwise by angle, in our canvas
+        angleToJelly /= 10;
+        if (turnRight === false) {
+          angleToJelly *= -1; // rotates left
+        }
+
+        // Here we turn the fish quickly towards target
+        // jelly ring (keeping speed unchanged)
+        //
+        // Use current velocity, and new rotated velocity to give
+        // required acceleration for this draw cycle, and
+        // mult by fish mass to upgrade it to a swim 'force'
+        var vcopy = this.velocity.copy();
+        vcopy.rotate(angleToJelly); // rotating changes direction, not speed
+        var swimForce = p5.Vector.sub(vcopy, this.velocity);
+        swimForce.mult(this.mass);
+        // apply this 'attack' swimForce to fish, so it turns quickly
+        // while not changing speed
+        this.applyForce(swimForce);
+        return;
+      }
+
+      // this is the case where the target jelly ring is within
+      // 20 deg of the fish heading. Just compute and apply an
+      // attack swimForce to the fish, that is along a line that
+      // points at the jelly ring from the fish.
+      //
+      // 'fishToJelly' points at target jelly ring. Normalize and mult
+      // by acceleration attack strength.  Then mult by fish mass
+      // to get an attack swim'force' to apply to fish.
+      // Fish 'speed' is changed by this force.
+      fishToJelly.normalize();
+      fishToJelly.mult(FISH_ATTACK_ACCELERATION);
+      fishToJelly.mult(this.mass);
+      // apply this 'attack' swimforce to the fish,
+      this.applyForce(fishToJelly);
+    };
+
+    /*
+     * Fish scavenge behavior
+     *
+     * Fish moves around, appearing to look for food, in a
+     * path of circular arcs. A new circular arc is determined
+     * by choosing a small constant angle to change the fish
+     * velocity by on a draw cycle, and by choosing the number
+     * of draw cycles to do that for (same angle each draw cycle for
+     * that arc)
+     *
+     * As the fish swims, it gets hungrier (reflected by its color),
+     * and when its tummy is empty it will change to 'attack' behavior
+     */
+    Fish.prototype.scavenge = function() {
+      // fish gets a bit hungrier
+      this.tummyFullness--;
+      // when tummy empty, fish will check for a nearby jelly ring,
+      // and attack it, if there is one
+      if (this.tummyFullness <= 0) {
+        var nearbyJelly = JellyRing.nearby(this.position, DETECTION_RADIUS);
+        if (nearbyJelly !== null) {
+          // change to 'attack' behavior, and store the target jelly
+          // ring's position, to serve as a 'destination' in
+          // attack mode
+          this.behavior = "attack";
+          this.jellyPos = nearbyJelly.position;
+          // do attack behavior
+          this.attack();
+          return;
+        }
+      }
+
+      // next piece of current arc (one 'piece' per draw cycle)
+      this.arcPieces--;
+      if (this.arcPieces < 0) {
+        //
+        // current arc is done, get new scavenge swim arc made
+        // of many 'pieces', and a small angle to use repeatedly,
+        // .arcPieces number of times.
+        this.arcPieces = random(ARC_PIECES_MIN, ARC_PIECES_MAX);
+        // do left-arc 50% of time, and right-arc 50% of time
+        if (random(0, 1) < 0.5) {
+          // turn right by some small degrees (same small direction
+          // change for each piece of arc)
+          this.arcPieceAngle = random(1, 4);
+        } else {
+          // turn left by some small degrees
+          this.arcPieceAngle = random(-1, -4);
+        }
+      }
+
+      // please note: we do not generate fish 'swim'
+      // motion, from lifelike muscular forces.
+      //
+      // Instead, we start from a path (arc) that we want the
+      // fish to swim for 'scavenge' behavior, and work backwards
+      // to determine the necessary 'swim' force to give us that
+      // arc (and then apply that force to the fish)
+      //
+      var vCopy = this.velocity.copy(); // current velocity
+      vCopy.rotate(this.arcPieceAngle); // rotated gives new velocity
+      // change in velocity is the acceleration
+      var swimForce = p5.Vector.sub(vCopy, this.velocity);
+      // mult by fish mass gives a swim 'force'
+      swimForce.mult(this.mass);
+      // apply force to fish (changes fish velocity by
+      // arcPieceAngle this draw cycle)
+      this.applyForce(swimForce);
+    };
+
+    /*
+     * Fish update:
+     *
+     * Scavenge or attack behaviors make a contribution
+     * to this cycle's acceleration vector via an applied
+     * 'swim' force. Stunned behavior makes a
+     * contribution via an applied 'drag' force (that brings the
+     * drifting unconscious fish to rest). A jelly ring's
+     * defensive behaviors can also make a contribution via
+     * an applied 'fish-repulsion' force.
+     */
+    Fish.prototype.update = function() {
+      if (this.behavior === "scavenge") {
+        this.scavenge();
+      } else if (this.behavior === "attack") {
+        this.attack();
+      } else if (this.behavior === "stunned") {
+        this.stunned();
+      }
+      this.velocity.add(this.acceleration);
+      this.position.add(this.velocity);
+
+      // clean the acceleration vector for next draw cycle of
+      // accumulated contributions
+      this.acceleration.mult(0);
+
+      this.adjustforBoundary();
+    };
+
+    /*
+     * Fish display
+     *
+     * Fish is always drawn with vertices around 0,0. translate()
+     * is used to position the fish. rotate() is used to orient
+     * the fish (using velocity heading angle). scale() is used
+     * to size the fish.
+     */
+    Fish.prototype.display = function() {
+      resetMatrix();
+      // position fish
+      translate(this.position.x, this.position.y);
+      // tail to nose as drawn is 0 deg, rotate() changes that
+      if (this.behavior === "stunned") {
+        // rotate by fish velocity heading, saved when stunned
+        rotate(this.stunnedHeading);
+      } else {
+        // rotate by current fish velocity heading
+        rotate(this.velocity.heading());
+      }
+      // size the fish
+      scale(FISH_SCALE);
+
+      noStroke();
+
+      // draw fish body
+      //
+      // body color is based on how hungry fish is, red for hungry,
+      // green for satisfied (full tummy)
+      //
+      // red and green color components done separately to achieve
+      // the smooth transition desired (much playing around to get
+      // it nice)
+      //
+      var tumMin = FISH_TUMMY_FULL / 2;
+      var tumMax = FISH_TUMMY_FULL;
+      var redVal = map(this.tummyFullness, tumMin, tumMax, 255, 0);
+      redVal = constrain(redVal, 0, 255);
+
+      var tumMin = 0;
+      var tumMax = FISH_TUMMY_FULL / 2;
+      var greenVal = map(this.tummyFullness, tumMin, tumMax, 0, 255);
+      greenVal = constrain(greenVal, 0, 255);
+
+      if (this.behavior === "stunned") {
+        // gray body for stunned fish
+        fill(100, 100, 100);
+      } else {
+        // fish body color reflects its hunger
+        fill(redVal, greenVal, 150);
+      }
+
+      // body geometry
+      beginShape();
+      vertex(-7, -3); // torso
+      vertex(10, -10);
+      vertex(20, -10); // head
+      vertex(30, 0); // nose
+      vertex(20, 10); // head
+      vertex(10, 10);
+      vertex(-7, 3); // torso
+      endShape();
+
+      // oscillate fish tail if not stunned
+      if (this.behavior !== "stunned") {
+        // link speed of tail oscillation to
+        // normal speed of fish
+        this.tailAngle += FISH_TAIL_OSCILLATION_SPEED * this.origSpeed;
+      }
+      // compute oscillation increments
+      var tailSin1 = 1 * sin(this.tailAngle); // -1 to +1
+      var tailSin2 = 2 * tailSin1; // -2 to +2
+      var tailSin5 = 5 * tailSin1; // -5 to +5
+      // draw fish tail using oscillation increments
+      beginShape();
+      vertex(-20 - tailSin5, -15 + tailSin5);
+      vertex(-10 - tailSin1, -3 + tailSin2);
+      vertex(-4, -3);
+      vertex(-4, 3);
+      vertex(-10 + tailSin1, 3 + tailSin2);
+      vertex(-20 + tailSin5, +15 + tailSin5);
+      endShape();
+
+      // draw fish eyes, with special eyes
+      // for "stunned" behavior fish
+      //
+      if (this.behavior === "stunned") {
+        fill(255, 0, 0); // red outer eyes
+        ellipse(18, -7, 11, 11);
+        ellipse(18, 7, 11, 11);
+        fill(255, 255, 255); // white pupils
+        ellipse(18, -4, 6, 6);
+        ellipse(18, 4, 6, 6);
+      } else {
+        fill(0, 0, 0); // simple black eyes
+        ellipse(18, -4, 6, 6);
+        ellipse(18, 4, 6, 6);
+      }
+    };
+
+    /*
+     * adjust fish position, to keep it in the canvas area
+     *
+     * if fish goes south, wrap to north, and vice versa
+     * if fish goes right, wrap to left,  and vice versa
+     */
+    Fish.prototype.adjustforBoundary = function() {
+      if (this.position.x > width) {
+        this.position.x = 0;
+      }
+      if (this.position.x < 0) {
+        this.position.x = width;
+      }
+      if (this.position.y > height) {
+        this.position.y = 0;
+      }
+      if (this.position.y < 0) {
+        this.position.y = height;
+      }
+    };
+
+    var cnv;
+
+    function setup() {
+      cnv = createCanvas(400, 400);
+      centerCanvas();
+      angleMode(DEGREES);
+
+      JellyRing.respawnArray();
+
+      WATER_COLOR = color(0, 0, 255); // dark blue
+      DEFENCE_RING_COLOR = color(210, 150, 150, 200);
+      DEFENCE_EDGE_COLOR_EXPAND = color(255, 0, 0, 150);
+      DEFENCE_EDGE_COLOR_FINAL = color(100, 0, 255, 130);
+
+      for (var i = 0; i < NUMBER_FISH; i++) {
+        fishes[i] = new Fish();
+      }
+    } // setup
+    
+    function centerCanvas() {
+      var x = (windowWidth - width) / 2;
+      var y = (windowHeight - height) / 2;
+      cnv.position(x, y);
+    }
+
+    function windowResized() {
+      centerCanvas();
+    }
+    
+    /*
+ * DEBUGGING aid used to slow down and speed up
+ * up processing. Achieved by choosing to do
+ * nothing in some draw() cycles (just return
+ * immediately)
+ *
+ * How to use (type 'L' or 'K'):
+ *
+ *  slow program down by typing cap 'L' 
+ *  - once   50% of orig speed
+ *  - twice  33% of orig speed
+ *  - thrice 25% of orig speed
+ *
+ * to speed program up type cap 'K'
+ *  - each press of 'K' undoes one press of 'L'
+ */
+var jdbgMAX = 0;
+var jdbg    = jdbgMAX;
+keyPressed = function() {
+    if (keyCode === 75) {
+        // 'K' pressed
+        if (jdbgMAX >= 1) {
+           jdbgMAX--;
+        }
+    } else if (keyCode === 76 ) { 
+        // 'L' pressed
+        jdbgMAX++;
+    }
+};
+
+var respawnJRs = false;
+var respawnCnt = 0;
+
+draw = function() {
+    // uncomment the following 'return' to quiet the canvas
+    //return;
+
+    // DEBUGGING aid
+    //
+    // used with keyPressed code above to slow program
+    // down, and then speed it up again.  Useful for
+    // debugging force issues.
+    if (--jdbg >=0 ) {
+        return;
+    }
+    jdbg = jdbgMAX;
+
+    // draw water
+    background(WATER_COLOR);
+
+    // when all jelly rings are dead (=== 0), wait for count
+    // of JELLY_RESPAWN_WAIT before respawning them all
+    if (respawnJRs === false && JellyRing.clean() === 0 ) {
+      // all dead now, so start respawn countdown
+      respawnJRs = true;
+      respawnCnt = JELLY_RESPAWN_WAIT;
+    }
+    if (respawnJRs === true) {
+      // count down by one, and respawn at end of countdown
+      if (--respawnCnt < 0) {
+        JellyRing.respawnArray();
+        respawnJRs = false;
+      }
+    }
+    
+    for (var i = 0; i < jellyRings.length; i++) {
+      jellyRings[i].update(); // lots happens here
+      jellyRings[i].display();
+    }
+    
+    for (var i = 0; i < fishes.length; i++) {
+      fishes[i].update(); // special lots happens here
+      fishes[i].display();
+    }
+
+};
+  </script>
+</html>
+
