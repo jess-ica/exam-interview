@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Jessica Hood ICS4U Portfolio</title>
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Abril+Fatface&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+
+    <script src="https://raw.githubusercontent.com/processing-js/processing-js/v1.4.8/processing.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/addons/p5.sound.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="script.js"></script>
+  </head>
+
+  <div class="header-here"></div>
+
+  <a class="back" href="index.html#cv">Back</a>
+
+  <script>
+    new p5();
+
+    var cnv;
+
+    function centerCanvas() {
+      var x = (windowWidth - width) / 2;
+      var y = (windowHeight - height) / 2;
+      cnv.position(x, y);
+    }
+
+    function windowResized() {
+      centerCanvas();
+    }
+
+    var d = 5;
+    var n = 2;
+    var sliderN;
+    var sliderD;
+
+    var Flower = function() {
+      this.x = this.x;
+      this.y = this.y;
+      this.n = this.n;
+      this.d = this.d;
+      this.o = this.o;
+    };
+
+    Flower.prototype.draw = function() {
+      this.x = mouseX;
+      this.y = mouseY;
+
+      translate(this.x, this.y);
+      scale(0.5);
+
+      this.n = sliderN.value();
+      this.d = sliderD.value();
+      this.o = sliderO.value();
+
+      var k = this.n / this.d;
+
+      noFill();
+      stroke(255);
+
+      beginShape();
+
+      for (var i = 0; i < TWO_PI * this.d; i += 0.02) {
+        var r = 200 * cos(k * i) + this.o;
+        var x = r * cos(i);
+        var y = r * sin(i);
+
+        vertex(x, y);
+      }
+      endShape(CLOSE);
+    };
+
+    function setup() {
+      cnv = createCanvas(400, 400);
+      centerCanvas();
+      sliderN = createSlider(1, 20, 15, 1);
+      sliderD = createSlider(1, 20, 10, 1);
+      sliderO = createSlider(1, 100, 50, 1);
+      sliderN.input(draw);
+      sliderD.input(draw);
+      sliderO.input(draw);
+    }
+
+    var flower = null;
+
+    function draw(event) {
+      if (flower === null) {
+        flower = new Flower();
+      }
+
+      background(255, 70, 60);
+
+      flower.draw();
+    }
+  </script>
+</html>
+
