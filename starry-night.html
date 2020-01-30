@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Jessica Hood ICS4U Portfolio</title>
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Abril+Fatface&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://raw.githubusercontent.com/processing-js/processing-js/v1.4.8/processing.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/addons/p5.sound.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="script.js"></script>
+  </head>
+
+  <div class="header-here"></div>
+
+  <a class="back" href="index.html#introjs">Back</a>
+
+  <script>
+    new p5();
+
+    var cnv;
+
+    function centerCanvas() {
+      var x = (windowWidth - width) / 2;
+      var y = (windowHeight - height) / 2;
+      cnv.position(x, y);
+    }
+
+    function setup() {
+      cnv = createCanvas(400, 400);
+      centerCanvas();
+      background(89, 216, 255);
+      angleMode(DEGREES);
+
+    }
+
+    function windowResized() {
+      centerCanvas();
+    }
+
+    var xPos = 0;
+    var yPos = 0;
+    var xPos2 = 600;
+    var yPos2 = -50;
+    draw = function() {
+      //colour
+      background(29, 40, 115);
+      fill(255, 238, 0);
+      stroke(255, 238, 0);
+      strokeWeight(1);
+      //stars
+      ellipse(xPos, yPos, 20, 20);
+      ellipse(xPos2, yPos2, 10, 10);
+      xPos += 3;
+      yPos++;
+      xPos2 -= 5;
+      yPos2 += 3;
+
+      //flowers
+      var xFlower = 115;
+      var yFlower = 305;
+
+      //stem
+      stroke(44, 148, 18);
+      fill(214, 199, 199);
+      noFill();
+      strokeWeight(10);
+      arc(xFlower, yFlower, 56, 202, -105, 99);
+      //petals
+      fill(209, 0, 0);
+      stroke(209, 0, 0);
+      arc(xFlower - 28, yFlower - 72, 62, 56, -155, 34);
+      ellipse(xFlower - 29, yFlower - 70, 40, 40);
+
+      //hills
+      fill(2, 97, 5);
+      stroke(2, 97, 5);
+      ellipse(21, 395, 481, 116);
+      ellipse(388, 412, 275, 225);
+
+      //flower2
+      //stem
+      stroke(44, 148, 18);
+      fill(214, 199, 199);
+      noFill();
+      strokeWeight(20);
+      arc(xFlower + 149, yFlower - 18, 105, 299, 85, 280);
+
+      //petals
+      fill(209, 0, 0);
+      stroke(209, 0, 0);
+      strokeWeight(15);
+      arc(xFlower + 171, yFlower - 191, 109, 98, -294, -141);
+      ellipse(xFlower + 165, yFlower - 187, 75, 75);
+    };
+  </script>
+</html>
+
