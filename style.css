@@ -8,8 +8,17 @@ body {
   margin: 0px;
 }
 
-#portfolio-title {
+#portfolio-title a {
   font-family: 'Abril Fatface', cursive;
+  color: #272942;
+  transition: color 0.5s;
+  text-decoration: none;
+}
+
+
+#portfolio-title a:hover {
+  text-decoration: none;
+  color: #5a5e8f;
 }
 
 #main {
@@ -33,9 +42,8 @@ body {
 
 .module-text {
   font-family: 'Roboto', sans-serif;
-}
-
-.module {
+  margin-top: 20px;
+  margin-bottom: 40px;
 }
 
 #module-list {
@@ -55,16 +63,21 @@ body {
   height: 500px;
   overflow-y: scroll;
   border: 5px solid #fff;
-    padding: 20px;
+  padding: 20px;
   margin: 10px;
-
- 
 }
 
-.website {
-
+.js-module {
+  width: 90%;
+  margin: 10px;
+  border: 5px solid #fff;
 }
 
+.back {
+  font-family: 'Abril Fatface', cursive;
+  font-size: 25px;
+  margin-left: 20px;
+}
 #travel-webpage {
   background: rgb(198, 219, 242); 
   
@@ -170,5 +183,12 @@ body {
 #pyraminx {
   width: 57%;
 }
+
 #cube {
   width: 38%;
+}
+
+.image {
+  width: 100%;
+  border: 5px solid #fff;
+}
