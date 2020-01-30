@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Jessica Hood ICS4U Portfolio</title>
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Abril+Fatface&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+
+    <script src="https://raw.githubusercontent.com/processing-js/processing-js/v1.4.8/processing.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/addons/p5.sound.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="script.js"></script>
+  </head>
+
+  <div class="header-here"></div>
+
+  <a class="back" href="index.html#algorithms">Back</a> 
+
+
+  <script>
+    new p5();
+
+    var cnv;
+
+    function centerCanvas() {
+      var x = (windowWidth - width) / 2;
+      var y = (windowHeight - height) / 2;
+      cnv.position(x, y);
+    }
+
+    
+
+    function windowResized() {
+      centerCanvas();
+    }
+
+    /*
+     * Selection Sort Visualizer Project
+     *
+     * Takes an array, sorts it according to Selection Sort
+     * algorithm, and displays the array at each stage in
+     * the sort. The 'quadrant' specifies where to display
+     * (normal Cartesian quadrant numbers are used, ie. 1
+     * is upper right of canvas, 2 is upper left, 3 is lower
+     * left, and 4 is lower right)
+     *
+     */
+    var SelectionSort = function(quadrant, array) {
+      this.quadrant = quadrant; // which quadrant for display
+      this.array = array; // the array to be sorted
+    };
+
+    /*
+     * sorting function of selection sort
+     */
+    SelectionSort.prototype.sort = function() {
+      //println("Array before sorting: " + this.array + "\n");
+
+      var minIndex;
+      // each pass through the loop determines the minimum element
+      // in a right subarray, displays the array's current state,
+      // and swaps the minimum element with the beginning element of
+      // the right subarray. At loop end, the array is fully sorted.
+      for (var leftIndex = 0; leftIndex < this.array.length; leftIndex++) {
+        minIndex = this.indexOfMinimum(leftIndex);
+
+        this.displayArray(leftIndex, minIndex);
+
+        this.swap(leftIndex, minIndex);
+      }
+      // the array is fully sorted at this point
+
+      var white = color(210, 210, 210);
+      resetMatrix();
+      stroke(white);
+      strokeWeight(2);
+      // display quadrant division lines
+      line(width / 2, 10, width / 2, 390);
+      line(10, height / 2, 390, height / 2);
+
+      //println("Array after sorting: " + this.array + "\n\n");
+    };
+
+    /*
+     * function to determine the minimum value in the
+     * right subarray starting at 'leftIndex', and
+     * returns its index 'minIndex'
+     *
+     */
+    SelectionSort.prototype.indexOfMinimum = function(leftIndex) {
+      var minIndex = leftIndex;
+      var minValue = this.array[leftIndex];
+
+      for (var i = leftIndex + 1; i < this.array.length; i++) {
+        if (this.array[i] < minValue) {
+          minIndex = i;
+          minValue = this.array[i];
+        }
+      }
+      return minIndex;
+    };
+
+    /*
+     * function to swap pair of elements with specified
+     * indexes in this.array (used to move smaller
+     * array elements to the left in the array)
+     *
+     */
+    SelectionSort.prototype.swap = function(leftIndex, minIndex) {
+      if (leftIndex === minIndex) {
+        // println("same index, returning");
+        return;
+      }
+      var temp = this.array[leftIndex];
+      this.array[leftIndex] = this.array[minIndex];
+      this.array[minIndex] = temp;
+    };
+
+    /*
+     * function to display the current state of this.array, and to draw
+     * a line indicating the swapping of the mininum value element to
+     * its new position
+     */
+    SelectionSort.prototype.displayArray = function(leftIndex, minIndex) {
+      // the following builds a string representation of the
+      // values stored in the array
+      var string = "";
+      for (var i = 0; i < this.array.length; i++) {
+        var len = this.array[i].toString().length;
+        switch (len) {
+          case 1:
+            string += "  " + this.array[i];
+            break;
+          case 2:
+            string += " " + this.array[i];
+            break;
+          default:
+            println(
+              "displayArray: Unhandled size for ->" + this.array[i] + "<-"
+            );
+            break;
+        }
+      }
+
+      var yellow = color(255, 255, 170);
+      var red = color(255, 170, 170);
+      var green = color(170, 255, 170);
+      var blue = color(190, 190, 255);
+
+      // manage the transformations to shrink all
+      // text to the perfect size, and translate it
+      // to the specified quadrant. Colors are
+      // also set based on quadrant for text, and
+      // lines
+
+      resetMatrix();
+      switch (this.quadrant) {
+        case 1:
+          translate(210, -10);
+          fill(yellow);
+          stroke(yellow);
+          break;
+        case 2:
+          translate(10, -10);
+          fill(red);
+          stroke(red);
+          break;
+        case 3:
+          translate(10, 195);
+          fill(green);
+          stroke(green);
+          break;
+        case 4:
+          translate(210, 195);
+          fill(blue);
+          stroke(blue);
+          break;
+      }
+      scale(0.7);
+
+      // output string representation of this.array
+      // (its current state, **before** swapping of the
+      // currently identified minimum value)
+      textFont("monospace");
+      textSize(20);
+      text(string, 10, 40 * (leftIndex + 1));
+
+      if (leftIndex > 5) {
+        // for the last 'leftIndex', do not draw line
+        // for another minimum element, since array is fully
+        // sorted at this point (all subarrays have been
+        // scanned and necessary swapping completed)
+        return;
+      }
+
+      strokeWeight(2);
+
+      var lineX1 = 36 + 32 * minIndex;
+      var lineY1 = 44 + 40 * leftIndex;
+
+      var lineX2 = 36 + 32 * leftIndex;
+      var lineY2 = 62 + 40 * leftIndex;
+
+      // draw line indicating where the minimum element
+      // will move to in the array
+      line(lineX1, lineY1, lineX2, lineY2);
+    };
+
+    function setup() {
+      cnv = createCanvas(400, 400);
+      centerCanvas();
+
+      background(0, 0, 0); // black
+
+      // original, first array
+      var firstArray = new SelectionSort(1, [99, 22, 0, 88, 9, -7, 42]);
+      firstArray.sort();
+
+      // an array sorted backwards with largest first
+      var reverseArray = new SelectionSort(2, [33, 27, 15, 2, 0, -3, -8]);
+      reverseArray.sort();
+
+      // an array where a few values are the same
+      var sameValsArray = new SelectionSort(3, [6, 57, 6, 6, -3, 12, 57]);
+      sameValsArray.sort();
+
+      // an array where only one value (-1) is out of order
+      var onlyOneArray = new SelectionSort(4, [-9, 0, 13, 46, 66, 99, -1]);
+      onlyOneArray.sort();
+    } // setup
+    /*
+function draw() {
+  //background(220);
+}
+*/
+  </script>
+</html>
+
