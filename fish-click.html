@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Jessica Hood ICS4U Portfolio</title>
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Abril+Fatface&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+
+    <script src="https://raw.githubusercontent.com/processing-js/processing-js/v1.4.8/processing.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/addons/p5.sound.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="script.js"></script>
+  </head>
+
+  <div class="header-here"></div>
+
+  <a class="back" href="index.html#introjs">Back</a>
+
+  <script>
+    new p5();
+
+    var cnv;
+
+    function centerCanvas() {
+      var x = (windowWidth - width) / 2;
+      var y = (windowHeight - height) / 2;
+      cnv.position(x, y);
+    }
+
+    function setup() {
+      cnv = createCanvas(400, 400);
+      centerCanvas();
+      background(89, 216, 255);
+    }
+
+    function windowResized() {
+      centerCanvas();
+    }
+
+    var fish = function(
+      centerX,
+      centerY,
+      bodyLength,
+      bodyHeight,
+      bodyColour,
+      tailWidth,
+      eyeSize,
+      tailColour
+    ) {
+      noStroke();
+      fill(bodyColour);
+      // body
+      ellipse(centerX, centerY, bodyLength, bodyHeight);
+      // tail
+      fill(tailColour);
+      var tailHeight = bodyHeight / 2;
+      triangle(
+        centerX - bodyLength / 2 + 3,
+        centerY,
+        centerX - bodyLength / 2 - tailWidth,
+        centerY - tailHeight,
+        centerX - bodyLength / 2 - tailWidth,
+        centerY + tailHeight
+      );
+      // eye
+      fill(33, 33, 33);
+      ellipse(centerX + bodyLength / 4, centerY, eyeSize, eyeSize);
+    };
+
+    // draw a fish when the mouse is pressed
+    mouseClicked = function() {
+      // declaring and setting all variables
+      var length = random(10, 100);
+      var height = length / random(1, 3);
+      var colour = color(mouseX, mouseY, random(0, 255));
+      var tailWidth = length + random(-20, 20);
+      var eyeSize = random(height / 5, height / 3);
+      var tailColour = color(random(0, 255), mouseY, mouseX);
+
+      // passing values to the fish drawing function
+      fish(
+        mouseX,
+        mouseY,
+        length,
+        height,
+        colour,
+        tailWidth,
+        eyeSize,
+        tailColour
+      );
+    };
+  </script>
+</html>
+
